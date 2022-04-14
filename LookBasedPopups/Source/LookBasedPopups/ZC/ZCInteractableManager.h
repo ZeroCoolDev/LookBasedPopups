@@ -32,7 +32,11 @@ public:
 	void ItemExitedRange(class AActor* ExitingActor);
 
 private:
+	// Checks all items in range if we should show or hide the popup visibility
 	void CheckForItemsInRange();
+
+	// Fills the parameters with the world position of the crosshairs, and the forward direction (into the screen). Return true if successful
+	bool GetCrosshairWorldPosition(FVector& OutWorldPos, FVector& OutWorldDir);
 
 	// Keeps a running list of all items currently in range. Keyed by object unique ID (int) for quick lookup
 	UPROPERTY()

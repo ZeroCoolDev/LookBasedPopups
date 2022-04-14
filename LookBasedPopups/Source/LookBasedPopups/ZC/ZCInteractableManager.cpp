@@ -1,4 +1,8 @@
 #include "LookBasedPopups/ZC/ZCInteractableManager.h"
+#include "LookBasedPopups/LookBasedPopupsCharacter.h"
+
+#include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 DEFINE_LOG_CATEGORY(ZCInteractableMgrLog)
 
@@ -54,6 +58,35 @@ void UZCInteractableManager::ItemExitedRange(class AActor* ExitingActor)
 
 void UZCInteractableManager::CheckForItemsInRange()
 {
+	if (ItemsInRange.Num())
+	{
+		ALookBasedPopupsCharacter* OwningChar = Cast<ALookBasedPopupsCharacter>(GetOwner());
+		if (OwningChar)
+		{
+			FVector CrosshairWorldPos, CrosshairFwdDir;
+			if (GetCrosshairWorldPosition(CrosshairWorldPos, CrosshairFwdDir))
+			{
 
+			}
+		}
+	}
+}
+
+bool UZCInteractableManager::GetCrosshairWorldPosition(FVector& OutWorldPos, FVector& OutWorldDir)
+{
+	if (GEngine)
+	{
+		// Get viewport size
+		FVector2D ViewportSize;
+		GEngine->GameViewport->GetViewportSize(ViewportSize);
+
+		// Get screen space position of crosshairs
+		FVector2D CrosshairScreenPosition(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+		CrosshairScreenPosition.Y -= 50.f; // Account for the fact that the HUD raised crosshairs a little
+
+		// Get world location and direction of crosshairs
+		return UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0), CrosshairScreenPosition, OutWorldPos, OutWorldDir);
+	}
+	return false;
 }
 
