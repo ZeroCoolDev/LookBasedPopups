@@ -2,6 +2,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 DEFINE_LOG_CATEGORY(ZCInteractableLog)
 
@@ -32,6 +33,15 @@ AZCInteractable::AZCInteractable()
 		if (PopupWidget)
 		{
 			PopupWidget->SetupAttachment(GetRootComponent());
+		}
+	}
+
+	if (VisibleForm == nullptr)
+	{
+		VisibleForm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleForm"));
+		if (VisibleForm)
+		{
+			VisibleForm->SetupAttachment(GetRootComponent());
 		}
 	}
 }

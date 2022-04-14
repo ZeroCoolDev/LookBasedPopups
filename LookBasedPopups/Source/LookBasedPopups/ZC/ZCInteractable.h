@@ -41,4 +41,7 @@ private:
 	// UI Widget that shows the player when they are within range of interacting
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interact", meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* PopupWidget = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interact", meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* VisibleForm = nullptr;
 };
