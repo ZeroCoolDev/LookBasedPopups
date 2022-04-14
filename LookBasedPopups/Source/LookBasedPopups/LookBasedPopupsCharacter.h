@@ -78,6 +78,6 @@ public:
 private:
 	// ZC: Reference to our interactable manager for handling items in range
 	UPROPERTY()
-	class UZCInteractableManager* InteractableMgr;
+	class UZCInteractableManager* InteractableMgr = nullptr;
 };
 

@@ -95,6 +95,7 @@ void AZCInteractable::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	}
 
 	SetPopupVisibility(true);
+	UE_LOG(ZCInteractableLog, Log, TEXT("Began overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
 void AZCInteractable::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -108,6 +109,7 @@ void AZCInteractable::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		}
 	}
 	SetPopupVisibility(false);
+	UE_LOG(ZCInteractableLog, Log, TEXT("Stopped overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
 // Called every frame

@@ -34,7 +34,7 @@ public:
 private:
 	void CheckForItemsInRange();
 
-	// Keeps a running list of all items currently in range
+	// Keeps a running list of all items currently in range. Keyed by object unique ID (int) for quick lookup
 	UPROPERTY()
 	TMap<uint32, TWeakObjectPtr<class AActor>> ItemsInRange;
 	

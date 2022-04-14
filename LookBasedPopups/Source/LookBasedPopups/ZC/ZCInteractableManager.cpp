@@ -28,17 +28,28 @@ void UZCInteractableManager::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	CheckForItemsInRange();
 }
 
 void UZCInteractableManager::ItemEnteredRange(class AActor* EnteringActor)
 {
-	UE_LOG(LogTemp, Log, TEXT("actor [%d] is in range"), EnteringActor ? EnteringActor->GetUniqueID() : -1);
+	if (EnteringActor)
+	{
+		// It should never be the case that an item we just came into range with is already in the map
+		ensure(ItemsInRange.Find(EnteringActor->GetUniqueID()) == nullptr);
+		// Add the item to our map, keyed by the unique ID of the object
+		ItemsInRange.FindOrAdd(EnteringActor->GetUniqueID(), MakeWeakObjectPtr<AActor>(EnteringActor));
+		UE_LOG(ZCInteractableMgrLog, Log, TEXT("actor [%d] is in range"), EnteringActor->GetUniqueID());
+	}
 }
 
 void UZCInteractableManager::ItemExitedRange(class AActor* ExitingActor)
 {
-	UE_LOG(LogTemp, Log, TEXT("actor [%d] is out of range"), ExitingActor ? ExitingActor->GetUniqueID() : -1);
+	if (ExitingActor)
+	{
+		ItemsInRange.Remove(ExitingActor->GetUniqueID());
+		UE_LOG(ZCInteractableMgrLog, Log, TEXT("actor [%d] is out of range"), ExitingActor->GetUniqueID());
+	}
 }
 
 void UZCInteractableManager::CheckForItemsInRange()
