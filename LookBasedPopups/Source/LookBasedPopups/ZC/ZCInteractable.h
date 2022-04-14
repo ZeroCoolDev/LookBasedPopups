@@ -43,5 +43,5 @@ private:
 	class UWidgetComponent* PopupWidget = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interact", meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* VisibleForm = nullptr;
+	class UStaticMeshComponent* VisualMesh = nullptr;
 };

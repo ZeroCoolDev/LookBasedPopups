@@ -32,16 +32,24 @@ AZCInteractable::AZCInteractable()
 		PopupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PopupWidget"));
 		if (PopupWidget)
 		{
+			// Attach it to the root
 			PopupWidget->SetupAttachment(GetRootComponent());
 		}
 	}
 
-	if (VisibleForm == nullptr)
+	if (VisualMesh == nullptr)
 	{
-		VisibleForm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleForm"));
-		if (VisibleForm)
+		VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleForm"));
+		if (VisualMesh)
 		{
-			VisibleForm->SetupAttachment(GetRootComponent());
+			// Turn off all physics and collision
+			VisualMesh->SetSimulatePhysics(false);
+			VisualMesh->SetEnableGravity(false);
+			VisualMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+			VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+			// Attach it to the root
+			VisualMesh->SetupAttachment(GetRootComponent());
 		}
 	}
 }
