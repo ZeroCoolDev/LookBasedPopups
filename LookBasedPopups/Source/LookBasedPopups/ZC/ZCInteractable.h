@@ -17,12 +17,12 @@ public:
 	// Sets default values for this actor's properties
 	AZCInteractable();
 
+	// ZC: Toggles the popup visibility
+	void SetPopupVisibility(bool bVisible);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	// ZC: Toggles the popup visibility
-	void SetPopupVisibility(bool bVisible);
 
 	// ZC: Called when something (the player) begins overlapping
 	UFUNCTION()

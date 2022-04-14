@@ -1,10 +1,20 @@
 #include "LookBasedPopups/ZC/ZCInteractableManager.h"
+#include "LookBasedPopups/ZC/ZCInteractable.h"
 #include "LookBasedPopups/LookBasedPopupsCharacter.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 
 DEFINE_LOG_CATEGORY(ZCInteractableMgrLog)
+
+// Used for getting the player controller (need to pass in an index)
+#ifndef LOCAL_USER_NUM
+#define LOCAL_USER_NUM 0
+#endif // !LOCAL_USER_NUM
+
+#ifndef VECTOR_MULTIPLIER
+#define VECTOR_MULTIPLIER 50'000
+#endif // !VECTOR_MULTIPLIER
 
 // Sets default values for this component's properties
 UZCInteractableManager::UZCInteractableManager()
@@ -63,14 +73,40 @@ void UZCInteractableManager::CheckForItemsInRange()
 		{
 			FVector CrosshairWorldPos, CrosshairFwdDir;
 			if (GetCrosshairWorldPosition(CrosshairWorldPos, CrosshairFwdDir))
-			{
+			{			
+				// Get the player look dir (will be the same for every item this frame so no need to calculate it each loop iteration)
+				const FVector PlayerLookDir = CrosshairWorldPos + CrosshairFwdDir * VECTOR_MULTIPLIER;
+				DrawDebugLine(GetWorld(), CrosshairWorldPos, PlayerLookDir, FColor::Blue);
+
 				for (auto It = ItemsInRange.CreateConstIterator(); It; ++It)
 				{
-					const AActor* Item = Cast<AActor>(It->Value);
+					AActor* Item = Cast<AActor>(It->Value);
 					if (Item)
 					{
 						// Draw a line from the player to the item
 						DrawDebugLine(GetWorld(), OwningChar->GetActorLocation(), Item->GetActorLocation(), FColor::Green);
+
+						// Get the player look dir
+						const FVector DirectionToItem = Item->GetActorLocation() - CrosshairWorldPos;
+
+						// Draw a line from the 
+						DrawDebugLine(GetWorld(), CrosshairWorldPos, CrosshairWorldPos + DirectionToItem * VECTOR_MULTIPLIER, FColor::Red);
+
+
+						// Dot Product will be 1 = parallel, 0 = perpendicular, -1 = opposite
+						// So between 0->1 that means we're looking at it (at least some amount)
+						float LookAtItemAmount = FVector::DotProduct(PlayerLookDir.GetSafeNormal(), DirectionToItem.GetSafeNormal());
+						GEngine->AddOnScreenDebugMessage(0, -1.f, FColor::Green, FString::Printf(TEXT("LookAtItemAmount: %f"), LookAtItemAmount));
+
+						// If the two vectors are close enough to the point we consider the player looking at the item, show the popup. Otherwise hide it
+						bool bPopupShouldBeVisible = LookAtItemAmount >= ItemPopupVisibilityThreshold;
+
+						// Set the popup visibility on the Interactable based off our look direction
+						AZCInteractable* InteractableItem = Cast<AZCInteractable>(Item);
+						if (InteractableItem)
+						{
+							InteractableItem->SetPopupVisibility(bPopupShouldBeVisible);
+						}
 					}
 				}
 			}
@@ -91,7 +127,7 @@ bool UZCInteractableManager::GetCrosshairWorldPosition(FVector& OutWorldPos, FVe
 		CrosshairScreenPosition.Y -= 50.f; // Account for the fact that the HUD raised crosshairs a little
 
 		// Get world location and direction of crosshairs
-		return UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0), CrosshairScreenPosition, OutWorldPos, OutWorldDir);
+		return UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, LOCAL_USER_NUM), CrosshairScreenPosition, OutWorldPos, OutWorldDir);
 	}
 	return false;
 }
