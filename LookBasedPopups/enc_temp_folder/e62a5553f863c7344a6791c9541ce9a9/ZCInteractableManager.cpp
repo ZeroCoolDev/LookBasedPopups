@@ -43,6 +43,7 @@ void UZCInteractableManager::ItemEnteredRange(class AActor* EnteringActor)
 		ensure(ItemsInRange.Find(EnteringActor->GetUniqueID()) == nullptr);
 		// Add the item to our map, keyed by the unique ID of the object
 		ItemsInRange.FindOrAdd(EnteringActor->GetUniqueID(), MakeWeakObjectPtr<AActor>(EnteringActor));
+		UE_LOG(ZCInteractableMgrLog, Log, TEXT("actor [%d] is in range"), EnteringActor->GetUniqueID());
 	}
 }
 
@@ -51,6 +52,7 @@ void UZCInteractableManager::ItemExitedRange(class AActor* ExitingActor)
 	if (ExitingActor)
 	{
 		ItemsInRange.Remove(ExitingActor->GetUniqueID());
+		UE_LOG(ZCInteractableMgrLog, Log, TEXT("actor [%d] is out of range"), ExitingActor->GetUniqueID());
 	}
 }
 
@@ -58,6 +60,7 @@ void UZCInteractableManager::CheckForItemsInRange()
 {
 	if (ItemsInRange.Num())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("UZCInteractableManager::CheckForItemsInRange Ticking"));
 		ALookBasedPopupsCharacter* OwningChar = Cast<ALookBasedPopupsCharacter>(GetOwner());
 		if (ensure(OwningChar))
 		{
