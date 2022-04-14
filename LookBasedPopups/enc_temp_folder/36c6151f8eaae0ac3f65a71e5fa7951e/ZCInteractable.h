@@ -21,14 +21,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// ZC: Toggles the popup visibility
-	void SetPopupVisibility(bool bVisible);
-
-	// ZC: Called when something (the player) begins overlapping
+	// Called when something (the player) begins overlapping
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-	// ZC: Called when something (the player) stops overlapping
+	// Called when something (the player) stops overlapping
 	UFUNCTION()
 	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 

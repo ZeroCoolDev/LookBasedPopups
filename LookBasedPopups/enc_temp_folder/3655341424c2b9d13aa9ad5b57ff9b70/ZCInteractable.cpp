@@ -70,27 +70,15 @@ void AZCInteractable::BeginPlay()
 	{
 		ProximityTrigger->OnComponentEndOverlap.AddDynamic(this, &AZCInteractable::OnEndOverlap);
 	}
-
-	SetPopupVisibility(false);
-}
-
-void AZCInteractable::SetPopupVisibility(bool bVisible)
-{
-	if (PopupWidget)
-	{
-		PopupWidget->SetVisibility(bVisible);
-	}
 }
 
 void AZCInteractable::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	SetPopupVisibility(true);
 	UE_LOG(ZCInteractableLog, Log, TEXT("Began overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
 void AZCInteractable::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	SetPopupVisibility(false);
 	UE_LOG(ZCInteractableLog, Log, TEXT("Stopped overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
