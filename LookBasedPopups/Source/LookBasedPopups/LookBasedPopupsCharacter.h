@@ -21,6 +21,12 @@ class ALookBasedPopupsCharacter : public ACharacter
 public:
 	ALookBasedPopupsCharacter();
 
+	// ZC: Triggers once an interactable comes within range
+	void OnInteractableInRange(class AActor* EnteringActor);
+
+	// ZC: Triggers once an interactable goes out of range
+	void OnInteractableOutOfRange(class AActor* ExitingActor);
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -68,5 +74,10 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+	// ZC: Reference to our interactable manager for handling items in range
+	UPROPERTY()
+	class UZCInteractableManager* InteractableMgr;
 };
 

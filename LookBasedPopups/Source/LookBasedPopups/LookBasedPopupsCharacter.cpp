@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "LookBasedPopupsCharacter.h"
+
+#include "LookBasedPopups/ZC/ZCInteractableManager.h"
+
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -46,6 +49,29 @@ ALookBasedPopupsCharacter::ALookBasedPopupsCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	// Add the Interactable Manager component
+	if (InteractableMgr == nullptr)
+	{
+		InteractableMgr = CreateDefaultSubobject<UZCInteractableManager>(TEXT("InteractableManager"));
+		AddOwnedComponent(InteractableMgr);
+	}
+}
+
+void ALookBasedPopupsCharacter::OnInteractableInRange(class AActor* EnteringActor)
+{
+	if (InteractableMgr)
+	{
+		InteractableMgr->ItemEnteredRange(EnteringActor);
+	}
+}
+
+void ALookBasedPopupsCharacter::OnInteractableOutOfRange(class AActor* ExitingActor)
+{
+	if (InteractableMgr)
+	{
+		InteractableMgr->ItemExitedRange(ExitingActor);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
