@@ -37,7 +37,7 @@ ALookBasedPopupsCharacter::ALookBasedPopupsCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
-	CameraBoom->SocketOffset = FVector(0.f, 50.f, 50.f); // ZC: Offset the camera so we're looking 'over their right shoulder' vs them being directly in the middle of the screen
+	CameraBoom->SocketOffset = FVector(0.f, 50.f, 50.f); // ZC: Offset the camera so we're looking 'over their right shoulder at eye level' vs directly middle and over them
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
