@@ -23,11 +23,11 @@ ALookBasedPopupsCharacter::ALookBasedPopupsCharacter()
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = true; // ZC: Rotate the player based off controller yaw (player will always face the same direction as the 
+	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = false; // ZC: Character does not rotate towards the direction they're going
+	GetCharacterMovement()->bOrientRotationToMovement = false; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
@@ -37,7 +37,6 @@ ALookBasedPopupsCharacter::ALookBasedPopupsCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
-	CameraBoom->SocketOffset = FVector(0.f, 50.f, 50.f); // ZC: Offset the camera so we're looking 'over their right shoulder' vs them being directly in the middle of the screen
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
