@@ -1,4 +1,5 @@
 #include "LookBasedPopups/ZC/ZCInteractable.h"
+#include "LookBasedPopups/ZC/ZCInteractableManager.h"
 #include "LookBasedPopups/LookBasedPopupsCharacter.h"
 
 #include "Components/SphereComponent.h"
@@ -55,6 +56,14 @@ AZCInteractable::AZCInteractable()
 	}
 }
 
+void AZCInteractable::SetPopupVisibility(bool bVisible)
+{
+	if (PopupWidget)
+	{
+		PopupWidget->SetVisibility(bVisible);
+	}
+}
+
 // Called when the game starts or when spawned
 void AZCInteractable::BeginPlay()
 {
@@ -75,14 +84,6 @@ void AZCInteractable::BeginPlay()
 	SetPopupVisibility(false);
 }
 
-void AZCInteractable::SetPopupVisibility(bool bVisible)
-{
-	if (PopupWidget)
-	{
-		PopupWidget->SetVisibility(bVisible);
-	}
-}
-
 void AZCInteractable::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor)
@@ -90,7 +91,11 @@ void AZCInteractable::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 		ALookBasedPopupsCharacter* Char = Cast<ALookBasedPopupsCharacter>(OtherActor);
 		if (Char)
 		{
-			Char->OnInteractableInRange(this);
+			UZCInteractableManager* InteractManager = Cast<UZCInteractableManager>(Char->GetComponentByClass(TSubclassOf<UZCInteractableManager>()));
+			if (InteractManager)
+			{
+				InteractManager->ItemEnteredRange(this);
+			}
 		}
 	}
 
@@ -105,7 +110,11 @@ void AZCInteractable::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		ALookBasedPopupsCharacter* Char = Cast<ALookBasedPopupsCharacter>(OtherActor);
 		if (Char)
 		{
-			Char->OnInteractableOutOfRange(this);
+			UZCInteractableManager* InteractManager = Cast<UZCInteractableManager>(Char->GetComponentByClass(TSubclassOf<UZCInteractableManager>()));
+			if (InteractManager)
+			{
+				InteractManager->ItemExitedRange(this);
+			}
 		}
 	}
 	SetPopupVisibility(false);

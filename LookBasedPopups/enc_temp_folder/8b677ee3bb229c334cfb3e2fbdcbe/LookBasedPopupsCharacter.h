@@ -21,6 +21,12 @@ class ALookBasedPopupsCharacter : public ACharacter
 public:
 	ALookBasedPopupsCharacter();
 
+	// ZC: Triggers once an interactable comes within range
+	void OnInteractableInRange(class AActor* EnteringActor);
+
+	// ZC: Triggers once an interactable goes out of range
+	void OnInteractableOutOfRange(class AActor* ExitingActor);
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;

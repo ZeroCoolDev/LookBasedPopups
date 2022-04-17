@@ -58,6 +58,22 @@ ALookBasedPopupsCharacter::ALookBasedPopupsCharacter()
 	}
 }
 
+void ALookBasedPopupsCharacter::OnInteractableInRange(class AActor* EnteringActor)
+{
+	if (InteractableMgr)
+	{
+		InteractableMgr->ItemEnteredRange(EnteringActor);
+	}
+}
+
+void ALookBasedPopupsCharacter::OnInteractableOutOfRange(class AActor* ExitingActor)
+{
+	if (InteractableMgr)
+	{
+		InteractableMgr->ItemExitedRange(ExitingActor);
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 

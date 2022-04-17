@@ -1,4 +1,5 @@
 #include "LookBasedPopups/ZC/ZCInteractable.h"
+#include "LookBasedPopups/ZC/ZCInteractableManager.h"
 #include "LookBasedPopups/LookBasedPopupsCharacter.h"
 
 #include "Components/SphereComponent.h"
@@ -90,11 +91,14 @@ void AZCInteractable::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 		ALookBasedPopupsCharacter* Char = Cast<ALookBasedPopupsCharacter>(OtherActor);
 		if (Char)
 		{
-			Char->OnInteractableInRange(this);
+			UZCInteractableManager* InteractManager = Char->FindComponentByClass<UZCInteractableManager>();
+			if (InteractManager)
+			{
+				InteractManager->ItemEnteredRange(this);
+			}
 		}
 	}
 
-	SetPopupVisibility(true);
 	UE_LOG(ZCInteractableLog, Log, TEXT("Began overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
@@ -105,10 +109,13 @@ void AZCInteractable::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		ALookBasedPopupsCharacter* Char = Cast<ALookBasedPopupsCharacter>(OtherActor);
 		if (Char)
 		{
-			Char->OnInteractableOutOfRange(this);
+			UZCInteractableManager* InteractManager = Char->FindComponentByClass<UZCInteractableManager>();
+			if (InteractManager)
+			{
+				InteractManager->ItemExitedRange(this);
+			}
 		}
 	}
-	SetPopupVisibility(false);
 	UE_LOG(ZCInteractableLog, Log, TEXT("Stopped overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
