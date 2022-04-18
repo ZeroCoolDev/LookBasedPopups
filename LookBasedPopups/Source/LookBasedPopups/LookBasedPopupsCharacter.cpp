@@ -26,7 +26,7 @@ ALookBasedPopupsCharacter::ALookBasedPopupsCharacter()
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = true; // ZC: Rotate the player based off controller yaw (player will always face the same direction as the 
+	bUseControllerRotationYaw = true; // ZC: Rotate the player based off controller yaw (player will always face the same direction as the cursor
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement

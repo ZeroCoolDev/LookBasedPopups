@@ -116,6 +116,10 @@ void AZCInteractable::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 			}
 		}
 	}
+
+	// Whether the player is looking at this or not is irrelevant if they leave range.
+	SetPopupVisibility(false);
+	
 	UE_LOG(ZCInteractableLog, Log, TEXT("Stopped overlapping actor [%d]"), OtherActor ? OtherActor->GetUniqueID() : -1);
 }
 
